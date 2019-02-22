@@ -34,6 +34,6 @@ Read about how to install any packages from the `Unity Game Framework` registry:
 > Unity Game Framework | Copyright 2019
 
 [1]: changelog.md
-[2]: https://bintray.com/unity-game-framework/stable/com.ugf.assembies
-[3]: https://bintray.com/unity-game-framework/dev/com.ugf.assembies
+[2]: https://bintray.com/unity-game-framework/stable/com.ugf.assemblies
+[3]: https://bintray.com/unity-game-framework/dev/com.ugf.assemblies
 [4]: https://github.com/unity-game-framework/ugf-documentation/wiki/Install-Package
