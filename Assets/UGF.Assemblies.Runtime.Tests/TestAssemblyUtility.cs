@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using NUnit.Framework;
+using UGF.Assemblies.Runtime.Tests.TestAssembly;
 
 namespace UGF.Assemblies.Runtime.Tests
 {
@@ -8,25 +11,34 @@ namespace UGF.Assemblies.Runtime.Tests
         [Test]
         public void GetBrowsableTypesGeneric()
         {
-            int count = AssemblyUtility.GetBrowsableTypes<AssemblyBrowsableTypeAttribute>().Count();
+            var types = new List<Type>();
             
-            Assert.AreEqual(1, count);
+            AssemblyUtility.GetBrowsableTypes<AssemblyBrowsableTypeAttribute>(types);
+            
+            Assert.AreEqual(1, types.Count);
+            Assert.IsTrue(types[0].IsAssignableFrom(typeof(TestBrowsableType)));
         }
 
         [Test]
         public void GetBrowsableTypes()
         {
-            int count = AssemblyUtility.GetBrowsableTypes(typeof(AssemblyBrowsableTypeAttribute)).Count();
+            var types = new List<Type>();
             
-            Assert.AreEqual(1, count);
+            AssemblyUtility.GetBrowsableTypes(types, typeof(AssemblyBrowsableTypeAttribute));
+            
+            Assert.AreEqual(1, types.Count);
+            Assert.IsTrue(types[0].IsAssignableFrom(typeof(TestBrowsableType)));
         }
 
         [Test]
         public void GetBrowsableAssemblies()
         {
-            int count = AssemblyUtility.GetBrowsableAssemblies().Count();
+            var assemblies = new List<Assembly>();
             
-            Assert.AreEqual(1, count);
+            AssemblyUtility.GetBrowsableAssemblies(assemblies);
+            
+            Assert.AreEqual(1, assemblies.Count);
+            Assert.AreEqual("TestAssembly", assemblies[0].GetName().Name);
         }
     }
 }

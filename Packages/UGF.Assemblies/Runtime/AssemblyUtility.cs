@@ -6,55 +6,63 @@ namespace UGF.Assemblies.Runtime
 {
     public static class AssemblyUtility
     {
-        public static IEnumerable<(T attribute, Type type)> GetBrowsableTypes<T>(bool inherit = true) where T : Attribute
+        public static void GetBrowsableTypes<T>(List<Type> result, bool inherit = true) where T : Attribute
         {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            if (result == null) throw new ArgumentNullException(nameof(result));
+            
+            GetBrowsableTypes(result, typeof(T), inherit);
+        }
+        
+        public static void GetBrowsableTypes(List<Type> result, Type attributeType, bool inherit = true)
+        {
+            if (result == null) throw new ArgumentNullException(nameof(result));
+            if (attributeType == null) throw new ArgumentNullException(nameof(attributeType));
+            
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+            for (int i = 0; i < assemblies.Length; i++)
             {
+                var assembly = assemblies[i];
+
                 if (assembly.IsDefined(typeof(AssemblyBrowsableAttribute)))
                 {
-                    var types = assembly.GetTypes();
+                    GetBrowsableTypes(result, assembly, attributeType, inherit);   
+                }
+            }
+        }
+        
+        public static void GetBrowsableTypes(List<Type> result, Assembly assembly, Type attributeType, bool inherit = true)
+        {
+            if (result == null) throw new ArgumentNullException(nameof(result));
+            if (assembly == null) throw new ArgumentNullException(nameof(result));
+            if (attributeType == null) throw new ArgumentNullException(nameof(attributeType));
             
-                    foreach (var type in types)
-                    {
-                        var attribute = type.GetCustomAttribute<T>(inherit);
-            
-                        if (attribute != null)
-                        {
-                            yield return (attribute, type);
-                        }
-                    }
+            var types = assembly.GetTypes();
+
+            for (var i = 0; i < types.Length; i++)
+            {
+                var type = types[i];
+
+                if (type.IsDefined(attributeType, inherit))
+                {
+                    result.Add(type);
                 }
             }
         }
 
-        public static IEnumerable<(object attribute, Type type)> GetBrowsableTypes(Type attributeType, bool inherit = true)
+        public static void GetBrowsableAssemblies(List<Assembly> result)
         {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            if (result == null) throw new ArgumentNullException(nameof(result));
+            
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+            for (int i = 0; i < assemblies.Length; i++)
             {
+                var assembly = assemblies[i];
+
                 if (assembly.IsDefined(typeof(AssemblyBrowsableAttribute)))
                 {
-                    var types = assembly.GetTypes();
-
-                    foreach (var type in types)
-                    {
-                        var attribute = type.GetCustomAttribute(attributeType, inherit);
-
-                        if (attribute != null)
-                        {
-                            yield return (attribute, type);
-                        }
-                    }
-                }
-            }
-        }
-
-        public static IEnumerable<Assembly> GetBrowsableAssemblies()
-        {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                if (assembly.IsDefined(typeof(AssemblyBrowsableAttribute)))
-                {
-                    yield return assembly;
+                    result.Add(assembly);
                 }
             }
         }
