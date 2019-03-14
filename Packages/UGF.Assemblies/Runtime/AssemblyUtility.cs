@@ -32,11 +32,11 @@ namespace UGF.Assemblies.Runtime
             if (result == null) throw new ArgumentNullException(nameof(result));
             if (attributeType == null) throw new ArgumentNullException(nameof(attributeType));
             
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
             for (int i = 0; i < assemblies.Length; i++)
             {
-                var assembly = assemblies[i];
+                Assembly assembly = assemblies[i];
 
                 if (assembly.IsDefined(typeof(AssemblyBrowsableAttribute)))
                 {
@@ -58,11 +58,11 @@ namespace UGF.Assemblies.Runtime
             if (assembly == null) throw new ArgumentNullException(nameof(assembly));
             if (attributeType == null) throw new ArgumentNullException(nameof(attributeType));
             
-            var types = assembly.GetTypes();
+            Type[] types = assembly.GetTypes();
 
-            for (var i = 0; i < types.Length; i++)
+            for (int i = 0; i < types.Length; i++)
             {
-                var type = types[i];
+                Type type = types[i];
 
                 if (type.IsDefined(attributeType, inherit))
                 {
@@ -79,11 +79,11 @@ namespace UGF.Assemblies.Runtime
         {
             if (result == null) throw new ArgumentNullException(nameof(result));
             
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
             for (int i = 0; i < assemblies.Length; i++)
             {
-                var assembly = assemblies[i];
+                Assembly assembly = assemblies[i];
 
                 if (assembly.IsDefined(typeof(AssemblyBrowsableAttribute)))
                 {
