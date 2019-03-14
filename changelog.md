@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Nothing.
 
 ### Changed
-- Refactoring: fix usage of 'var' (#11)
+- Nothing.
 
 ### Deprecated
 - Nothing.
@@ -25,6 +25,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 - Nothing.
+
+## 1.0.1 - 2019-03-14
+- [Commits](https://github.com/unity-game-framework/ugf-assemblies/compare/1.0.0...1.0.1)
+- [Milestone](https://github.com/unity-game-framework/ugf-assemblies/milestone/2?closed=1)
+
+### Changed
+- Refactoring: fix usage of 'var' (#11)
 
 ## 1.0.0 - 2019-02-22
 - [Commits](https://github.com/unity-game-framework/ugf-assemblies/compare/a43e504...1.0.0)
