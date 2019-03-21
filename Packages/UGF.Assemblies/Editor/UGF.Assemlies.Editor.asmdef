@@ -1,0 +1,17 @@
+{
+    "name": "UGF.Assemlies.Editor",
+    "references": [
+        "GUID:47c3349eaf0910446a6e557ee1a6748f"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}
