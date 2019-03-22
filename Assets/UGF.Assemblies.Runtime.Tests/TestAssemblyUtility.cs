@@ -36,7 +36,7 @@ namespace UGF.Assemblies.Runtime.Tests
 
             AssemblyUtility.GetBrowsableAssemblies(assemblies);
 
-            Assert.AreEqual(1, assemblies.Count);
+            Assert.GreaterOrEqual(assemblies.Count, 1);
             Assert.AreEqual("TestAssembly", assemblies[0].GetName().Name);
         }
     }

@@ -1,10 +1,10 @@
-# com.ugf.assembies
+# com.ugf.assemblies
 
 UGF.Assemblies
 
 ## Info
 
-- **Version**: `1.0.1`
+- **Version**: `1.1.0`
 - **Unity Version**: `2019.1.0`
 - **Scripting Runtime Version**: `.NET 4.x Equivalent`
 - **Api Compatibility Level**: `.NET Standard 2.0`
