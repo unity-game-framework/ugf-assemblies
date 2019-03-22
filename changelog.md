@@ -9,10 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Milestone](https://github.com/unity-game-framework/ugf-assemblies/milestone/0?closed=1)
 
 ### Added
-- Nothing.
+- `AssemblyEditorUtility` to control assembly attributes.
+- Context menu to `Assembly Definition File` to toggle usage of the `AssemblyBrowsableAttribute`.
 
 ### Changed
-- Nothing.
+- `AssemblyBrowsableAttribute`: `AttributeUsage.AllowMultiple` set to `true` to allow multiple usage of the attribute on assembly in project.
 
 ### Deprecated
 - Nothing.
