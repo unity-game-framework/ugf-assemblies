@@ -36,21 +36,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `GetAssetPathsUnderAssemblyDefinitionFile`;
   - `TryFindCompilationAssemblyByName`;
 
-### Changed
-- Nothing.
-
-### Deprecated
-- Nothing.
-
-### Removed
-- Nothing.
-
-### Fixed
-- Nothing.
-
-### Security
-- Nothing.
-
 ## 1.0.1 - 2019-03-32
 - [Commits](https://github.com/unity-game-framework/ugf-assemblies/compare/1.0.1...1.1.0)
 - [Milestone](https://github.com/unity-game-framework/ugf-assemblies/milestone/3?closed=1)
