@@ -9,7 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Milestone](https://github.com/unity-game-framework/ugf-assemblies/milestone/0?closed=1)
 
 ### Added
-- Nothing.
+- AssemblyEditorUtility: methods to work with assembly definitions (#18)
+  - `TryFindAssemblyDefinitionFilePathFromAssetPath`;
+  - `GetAssetPathsUnderAssemblyDefinitionFile`;
+  - `TryFindCompilationAssemblyByName`;
 
 ### Changed
 - Nothing.
