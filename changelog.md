@@ -9,6 +9,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Milestone](https://github.com/unity-game-framework/ugf-assemblies/milestone/0?closed=1)
 
 ### Added
+- Nothing.
+
+### Changed
+- Nothing.
+
+### Deprecated
+- Nothing.
+
+### Removed
+- Nothing.
+
+### Fixed
+- Nothing.
+
+### Security
+- Nothing.
+
+## 1.2.0 - 2019-04-01
+- [Commits](https://github.com/unity-game-framework/ugf-assemblies/compare/1.1.0...1.2.0)
+- [Milestone](https://github.com/unity-game-framework/ugf-assemblies/milestone/4?closed=1)
+
+### Added
 - AssemblyEditorUtility: methods to work with assembly definitions (#18)
   - `TryFindAssemblyDefinitionFilePathFromAssetPath`;
   - `GetAssetPathsUnderAssemblyDefinitionFile`;
