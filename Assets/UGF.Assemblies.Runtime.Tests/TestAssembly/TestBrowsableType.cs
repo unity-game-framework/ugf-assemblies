@@ -8,4 +8,9 @@ namespace UGF.Assemblies.Runtime.Tests.TestAssembly
     public class TestBrowsableType
     {
     }
+
+    [AssemblyBrowsableType]
+    public class TestBrowsableType2
+    {
+    }
 }

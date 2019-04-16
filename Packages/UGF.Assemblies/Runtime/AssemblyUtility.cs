@@ -9,14 +9,16 @@ namespace UGF.Assemblies.Runtime
     /// </summary>
     public static class AssemblyUtility
     {
-        public static AssemblyBrowsableTypesAllEnumerable GetBrowsableTypes(Type attributeType, bool inherit = true)
+        public static AssemblyBrowsableTypesAllEnumerable GetBrowsableTypes<T>(Assembly assembly = null, bool inherit = true) where T : Attribute
         {
-            return new AssemblyBrowsableTypesAllEnumerable(AppDomain.CurrentDomain.GetAssemblies(), attributeType, inherit);
+            return GetBrowsableTypes(typeof(T), assembly, inherit);
         }
 
-        public static AssemblyBrowsableTypesEnumerable GetBrowsableTypes(Type attributeType, Assembly assembly, bool inherit = true)
+        public static AssemblyBrowsableTypesAllEnumerable GetBrowsableTypes(Type attributeType, Assembly assembly = null, bool inherit = true)
         {
-            return new AssemblyBrowsableTypesEnumerable(assembly.GetTypes(), attributeType, inherit);
+            return assembly == null
+                ? new AssemblyBrowsableTypesAllEnumerable(AppDomain.CurrentDomain.GetAssemblies(), attributeType, inherit)
+                : new AssemblyBrowsableTypesAllEnumerable(assembly, attributeType, inherit);
         }
 
         public static AssemblyBrowsableAssembliesEnumerable GetBrowsableAssemblies()
@@ -33,7 +35,7 @@ namespace UGF.Assemblies.Runtime
         /// <param name="results">The result collection to fill.</param>
         /// <param name="assembly">The assembly to browse.</param>
         /// <param name="inherit">Determines whether to search in inheritance chain to find the attribute.</param>
-        public static void GetBrowsableTypes<T>(ICollection<Type> results, Assembly assembly = null, bool inherit = true)
+        public static void GetBrowsableTypes<T>(ICollection<Type> results, Assembly assembly = null, bool inherit = true) where T : Attribute
         {
             if (results == null) throw new ArgumentNullException(nameof(results));
 
@@ -75,7 +77,7 @@ namespace UGF.Assemblies.Runtime
             }
         }
 
-        public static void GetBrowsableTypes<T>(ICollection<Type> results, AssemblyBrowsableTypeValidateHandler validate, Assembly assembly = null, bool inherit = true)
+        public static void GetBrowsableTypes<T>(ICollection<Type> results, AssemblyBrowsableTypeValidateHandler validate, Assembly assembly = null, bool inherit = true) where T : Attribute
         {
             if (results == null) throw new ArgumentNullException(nameof(results));
             if (validate == null) throw new ArgumentNullException(nameof(validate));
