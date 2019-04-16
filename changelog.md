@@ -26,15 +26,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing.
 
+## 1.3.0 - 2019-04-16
+- [Commits](https://github.com/unity-game-framework/ugf-assemblies/compare/1.2.0...1.3.0)
+- [Milestone](https://github.com/unity-game-framework/ugf-assemblies/milestone/5?closed=1)
+
+### Added
+- `AssemblyUtility.GetBrowsableTypes` with results collection as `ICollection<Type>` and optional `Assembly` argument. 
+- `AssemblyUtility.TryGetBrowsableAssembly` to get browsable assembly by name.
+
+### Changed
+- `AssemblyUtility.GetBrowsableTypes` overloads that takes results collection as `List<Type>` have been deprecated.
+
 ## 1.2.0 - 2019-04-01
 - [Commits](https://github.com/unity-game-framework/ugf-assemblies/compare/1.1.0...1.2.0)
 - [Milestone](https://github.com/unity-game-framework/ugf-assemblies/milestone/4?closed=1)
 
 ### Added
-- AssemblyEditorUtility: methods to work with assembly definitions (#18)
-  - `TryFindAssemblyDefinitionFilePathFromAssetPath`;
-  - `GetAssetPathsUnderAssemblyDefinitionFile`;
-  - `TryFindCompilationAssemblyByName`;
+- `AssemblyEditorUtility`: methods to work with assembly definitions (#18)
+  - `TryFindAssemblyDefinitionFilePathFromAssetPath` to find assembly Definition file path from the asset path that belongs to it.
+  - `GetAssetPathsUnderAssemblyDefinitionFile` to get all asset paths that belongs to the specified assembly definition.
+  - `TryFindCompilationAssemblyByName` to find editor compilation assembly by the specified assembly name.
 
 ## 1.0.1 - 2019-03-32
 - [Commits](https://github.com/unity-game-framework/ugf-assemblies/compare/1.0.1...1.1.0)
