@@ -9,6 +9,21 @@ namespace UGF.Assemblies.Runtime
     /// </summary>
     public static class AssemblyUtility
     {
+        public static AssemblyBrowsableTypesAllEnumerable GetBrowsableTypes(Type attributeType, bool inherit = true)
+        {
+            return new AssemblyBrowsableTypesAllEnumerable(AppDomain.CurrentDomain.GetAssemblies(), attributeType, inherit);
+        }
+
+        public static AssemblyBrowsableTypesEnumerable GetBrowsableTypes(Type attributeType, Assembly assembly, bool inherit = true)
+        {
+            return new AssemblyBrowsableTypesEnumerable(assembly.GetTypes(), attributeType, inherit);
+        }
+
+        public static AssemblyBrowsableAssembliesEnumerable GetBrowsableAssemblies()
+        {
+            return new AssemblyBrowsableAssembliesEnumerable(AppDomain.CurrentDomain.GetAssemblies());
+        }
+
         /// <summary>
         /// Gets the browsable types marked with the specified attribute type.
         /// <para>
@@ -57,6 +72,40 @@ namespace UGF.Assemblies.Runtime
             else
             {
                 InternalGetBrowsableTypes(results, assembly, attributeType, inherit);
+            }
+        }
+
+        public static void GetBrowsableTypes<T>(ICollection<Type> results, AssemblyBrowsableTypeValidateHandler validate, Assembly assembly = null, bool inherit = true)
+        {
+            if (results == null) throw new ArgumentNullException(nameof(results));
+            if (validate == null) throw new ArgumentNullException(nameof(validate));
+
+            GetBrowsableTypes(results, validate, typeof(T), assembly, inherit);
+        }
+
+        public static void GetBrowsableTypes(ICollection<Type> results, AssemblyBrowsableTypeValidateHandler validate, Type attributeType, Assembly assembly = null, bool inherit = true)
+        {
+            if (results == null) throw new ArgumentNullException(nameof(results));
+            if (validate == null) throw new ArgumentNullException(nameof(validate));
+            if (attributeType == null) throw new ArgumentNullException(nameof(attributeType));
+
+            if (assembly == null)
+            {
+                Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+
+                for (int i = 0; i < assemblies.Length; i++)
+                {
+                    Assembly targetAssembly = assemblies[i];
+
+                    if (targetAssembly.IsDefined(typeof(AssemblyBrowsableAttribute)))
+                    {
+                        InternalGetBrowsableTypes(results, targetAssembly, attributeType, validate, inherit);
+                    }
+                }
+            }
+            else
+            {
+                InternalGetBrowsableTypes(results, assembly, attributeType, validate, inherit);
             }
         }
 
@@ -168,6 +217,21 @@ namespace UGF.Assemblies.Runtime
                 Type type = types[i];
 
                 if (type.IsDefined(attributeType, inherit))
+                {
+                    results.Add(type);
+                }
+            }
+        }
+
+        private static void InternalGetBrowsableTypes(ICollection<Type> results, Assembly assembly, Type attributeType, AssemblyBrowsableTypeValidateHandler validate, bool inherit)
+        {
+            Type[] types = assembly.GetTypes();
+
+            for (int i = 0; i < types.Length; i++)
+            {
+                Type type = types[i];
+
+                if (type.IsDefined(attributeType, inherit) && validate(type))
                 {
                     results.Add(type);
                 }

@@ -9,6 +9,34 @@ namespace UGF.Assemblies.Runtime.Tests
     public class TestAssemblyUtility
     {
         [Test]
+        public void GetBrowsableTypesEnumerableAll()
+        {
+            string[] types = AssemblyUtility.GetBrowsableTypes(typeof(AssemblyBrowsableTypeAttribute)).Select(x => x.Name).ToArray();
+
+            Assert.AreEqual(1, types.Length);
+            Assert.Contains("TestBrowsableType", types);
+        }
+
+        [Test]
+        public void GetBrowsableTypesEnumerableAssembly()
+        {
+            AssemblyUtility.TryGetBrowsableAssembly("TestAssembly", out Assembly assembly);
+
+            string[] types = AssemblyUtility.GetBrowsableTypes(typeof(AssemblyBrowsableTypeAttribute), assembly).Select(x => x.Name).ToArray();
+
+            Assert.AreEqual(1, types.Length);
+            Assert.Contains("TestBrowsableType", types);
+        }
+
+        [Test]
+        public void GetBrowsableAssembliesEnumerable()
+        {
+            string[] assemblies = AssemblyUtility.GetBrowsableAssemblies().Select(x => x.GetName().Name).ToArray();
+
+            Assert.Contains("TestAssembly", assemblies);
+        }
+
+        [Test]
         public void GetBrowsableTypesGeneric()
         {
             ICollection<Type> types = new List<Type>();
