@@ -6,7 +6,7 @@ namespace UGF.Assemblies.Runtime
 {
     public struct AssemblyBrowsableTypesEnumerable : IEnumerable<Type>
     {
-        private readonly Type[] m_types;
+        private readonly IReadOnlyList<Type> m_types;
         private readonly Type m_attributeType;
         private readonly bool m_inherit;
 
@@ -16,16 +16,16 @@ namespace UGF.Assemblies.Runtime
 
             object IEnumerator.Current { get { return m_current; } }
 
-            private readonly Type[] m_types;
+            private readonly IReadOnlyList<Type> m_types;
             private readonly Type m_attributeType;
             private readonly bool m_inherit;
             private int m_index;
             private Type m_current;
 
-            public Enumerator(Type[] types, Type attributeType, bool inherit)
+            public Enumerator(IReadOnlyList<Type> types, Type attributeType, bool inherit)
             {
-                m_types = types;
-                m_attributeType = attributeType;
+                m_types = types ?? throw new ArgumentNullException(nameof(types));
+                m_attributeType = attributeType ?? throw new ArgumentNullException(nameof(attributeType));
                 m_inherit = inherit;
                 m_index = 0;
                 m_current = null;
@@ -37,7 +37,7 @@ namespace UGF.Assemblies.Runtime
 
             public bool MoveNext()
             {
-                while (m_index < m_types.Length)
+                while (m_index < m_types.Count)
                 {
                     Type type = m_types[m_index++];
 
@@ -58,10 +58,10 @@ namespace UGF.Assemblies.Runtime
             }
         }
 
-        public AssemblyBrowsableTypesEnumerable(Type[] types, Type attributeType, bool inherit)
+        public AssemblyBrowsableTypesEnumerable(IReadOnlyList<Type> types, Type attributeType, bool inherit)
         {
-            m_types = types;
-            m_attributeType = attributeType;
+            m_types = types ?? throw new ArgumentNullException(nameof(types));
+            m_attributeType = attributeType ?? throw new ArgumentNullException(nameof(attributeType));
             m_inherit = inherit;
         }
 

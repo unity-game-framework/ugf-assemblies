@@ -8,7 +8,7 @@ namespace UGF.Assemblies.Runtime
     public struct AssemblyBrowsableTypesAllEnumerable : IEnumerable<Type>
     {
         private readonly Assembly m_assembly;
-        private readonly Assembly[] m_assemblies;
+        private readonly IReadOnlyList<Assembly> m_assemblies;
         private readonly Type m_attributeType;
         private readonly bool m_inherit;
 
@@ -18,7 +18,8 @@ namespace UGF.Assemblies.Runtime
 
             object IEnumerator.Current { get { return m_current; } }
 
-            private readonly Assembly[] m_assemblies;
+            private readonly Assembly m_assembly;
+            private readonly IReadOnlyList<Assembly> m_assemblies;
             private readonly Type m_attributeType;
             private readonly bool m_inherit;
             private AssemblyBrowsableAssembliesEnumerable.Enumerator m_assembliesEnumerator;
@@ -28,17 +29,19 @@ namespace UGF.Assemblies.Runtime
 
             public Enumerator(Assembly assembly, Type attributeType, bool inherit)
             {
+                m_assembly = assembly;
                 m_assemblies = null;
                 m_attributeType = attributeType;
                 m_inherit = inherit;
                 m_assembliesEnumerator = default;
-                m_typesEnumerator = new AssemblyBrowsableTypesEnumerable.Enumerator(assembly.GetTypes(), attributeType, inherit);
+                m_typesEnumerator = new AssemblyBrowsableTypesEnumerable.Enumerator(m_assembly.GetTypes(), m_attributeType, m_inherit);
                 m_typesInit = true;
                 m_current = null;
             }
 
-            public Enumerator(Assembly[] assemblies, Type attributeType, bool inherit)
+            public Enumerator(IReadOnlyList<Assembly> assemblies, Type attributeType, bool inherit)
             {
+                m_assembly = null;
                 m_assemblies = assemblies;
                 m_attributeType = attributeType;
                 m_inherit = inherit;
@@ -59,7 +62,19 @@ namespace UGF.Assemblies.Runtime
 
             public void Reset()
             {
-                m_assembliesEnumerator = new AssemblyBrowsableAssembliesEnumerable.Enumerator(m_assemblies);
+                if (m_assemblies != null)
+                {
+                    m_assembliesEnumerator = new AssemblyBrowsableAssembliesEnumerable.Enumerator(m_assemblies);
+                    m_typesEnumerator = default;
+                    m_typesInit = false;
+                }
+                else
+                {
+                    m_assembliesEnumerator = default;
+                    m_typesEnumerator = new AssemblyBrowsableTypesEnumerable.Enumerator(m_assembly.GetTypes(), m_attributeType, m_inherit);
+                    m_typesInit = true;
+                }
+
                 m_current = null;
             }
 

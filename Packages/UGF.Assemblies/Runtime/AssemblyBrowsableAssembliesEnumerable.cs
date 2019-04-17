@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -6,7 +7,7 @@ namespace UGF.Assemblies.Runtime
 {
     public struct AssemblyBrowsableAssembliesEnumerable : IEnumerable<Assembly>
     {
-        private readonly Assembly[] m_assemblies;
+        private readonly IReadOnlyList<Assembly> m_assemblies;
 
         public struct Enumerator : IEnumerator<Assembly>
         {
@@ -14,13 +15,13 @@ namespace UGF.Assemblies.Runtime
 
             object IEnumerator.Current { get { return m_current; } }
 
-            private readonly Assembly[] m_assemblies;
+            private readonly IReadOnlyList<Assembly> m_assemblies;
             private int m_index;
             private Assembly m_current;
 
-            public Enumerator(Assembly[] assemblies)
+            public Enumerator(IReadOnlyList<Assembly> assemblies)
             {
-                m_assemblies = assemblies;
+                m_assemblies = assemblies ?? throw new ArgumentNullException(nameof(assemblies));
                 m_index = 0;
                 m_current = null;
             }
@@ -31,7 +32,7 @@ namespace UGF.Assemblies.Runtime
 
             public bool MoveNext()
             {
-                while (m_index < m_assemblies.Length)
+                while (m_index < m_assemblies.Count)
                 {
                     Assembly assembly = m_assemblies[m_index++];
 
@@ -52,9 +53,9 @@ namespace UGF.Assemblies.Runtime
             }
         }
 
-        public AssemblyBrowsableAssembliesEnumerable(Assembly[] assemblies)
+        public AssemblyBrowsableAssembliesEnumerable(IReadOnlyList<Assembly> assemblies)
         {
-            m_assemblies = assemblies;
+            m_assemblies = assemblies ?? throw new ArgumentNullException(nameof(assemblies));
         }
 
         public Enumerator GetEnumerator()
