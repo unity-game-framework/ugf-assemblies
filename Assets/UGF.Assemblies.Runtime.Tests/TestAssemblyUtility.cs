@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,6 +9,42 @@ namespace UGF.Assemblies.Runtime.Tests
 {
     public class TestAssemblyUtility
     {
+        [AssemblyBrowsableType]
+        public class TestTarget
+        {
+        }
+
+        [Test]
+        public void GetBrowsableTypesEnumerableAll()
+        {
+            string[] types = AssemblyUtility.GetBrowsableTypes(typeof(AssemblyBrowsableTypeAttribute)).Select(x => x.Name).ToArray();
+
+            Assert.AreEqual(3, types.Length);
+            Assert.Contains("TestBrowsableType", types);
+            Assert.Contains("TestBrowsableType2", types);
+            Assert.Contains("TestTarget", types);
+        }
+
+        [Test]
+        public void GetBrowsableTypesEnumerableAssembly()
+        {
+            AssemblyUtility.TryGetBrowsableAssembly("TestAssembly", out Assembly assembly);
+
+            string[] types = AssemblyUtility.GetBrowsableTypes(typeof(AssemblyBrowsableTypeAttribute), assembly).Select(x => x.Name).ToArray();
+
+            Assert.AreEqual(2, types.Length);
+            Assert.Contains("TestBrowsableType", types);
+            Assert.Contains("TestBrowsableType2", types);
+        }
+
+        [Test]
+        public void GetBrowsableAssembliesEnumerable()
+        {
+            string[] assemblies = AssemblyUtility.GetBrowsableAssemblies().Select(x => x.GetName().Name).ToArray();
+
+            Assert.Contains("TestAssembly", assemblies);
+        }
+
         [Test]
         public void GetBrowsableTypesGeneric()
         {
@@ -15,8 +52,8 @@ namespace UGF.Assemblies.Runtime.Tests
 
             AssemblyUtility.GetBrowsableTypes<AssemblyBrowsableTypeAttribute>(types);
 
-            Assert.AreEqual(1, types.Count);
-            Assert.AreEqual("TestBrowsableType", types.First().Name);
+            Assert.AreEqual(3, types.Count);
+            Assert.Contains(typeof(TestTarget), (ICollection)types);
         }
 
         [Test]
@@ -26,8 +63,8 @@ namespace UGF.Assemblies.Runtime.Tests
 
             AssemblyUtility.GetBrowsableTypes(types, typeof(AssemblyBrowsableTypeAttribute));
 
-            Assert.AreEqual(1, types.Count);
-            Assert.AreEqual("TestBrowsableType", types.First().Name);
+            Assert.AreEqual(3, types.Count);
+            Assert.Contains(typeof(TestTarget), (ICollection)types);
         }
 
         [Test]
@@ -38,8 +75,9 @@ namespace UGF.Assemblies.Runtime.Tests
             AssemblyUtility.TryGetBrowsableAssembly("TestAssembly", out Assembly assembly);
             AssemblyUtility.GetBrowsableTypes(types, typeof(AssemblyBrowsableTypeAttribute), assembly);
 
-            Assert.AreEqual(1, types.Count);
-            Assert.AreEqual("TestBrowsableType", types.First().Name);
+            Assert.AreEqual(2, types.Count);
+            Assert.Contains("TestBrowsableType", types.Select(x => x.Name).ToArray());
+            Assert.Contains("TestBrowsableType2", types.Select(x => x.Name).ToArray());
         }
 
         [Test]
