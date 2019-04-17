@@ -9,7 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Milestone](https://github.com/unity-game-framework/ugf-assemblies/milestone/0?closed=1)
 
 ### Added
-- Nothing.
+- `GetBrowsableTypes` to get enumerable through the all browsable types from all assemblies or only from one. (#2)
+- `GetBrowsableAssemblies` to get enumerable through the all browsable assemblies. (#2)
+- `GetBrowsableTypes` with enumerable, will allow to implement additional filtering of the types. (#26)
 
 ### Changed
 - Nothing.
