@@ -9,11 +9,28 @@ namespace UGF.Assemblies.Runtime
     /// </summary>
     public static partial class AssemblyUtility
     {
+        /// <summary>
+        /// Gets enumerable through the all browsable types with the specified attribute.
+        /// <para>
+        /// If the assembly not specified, will search through the all browsable assemblies.
+        /// </para>
+        /// </summary>
+        /// <param name="assembly">The assembly to browse.</param>
+        /// <param name="inherit">Determines whether to search in inheritance chain to find the attribute.</param>
         public static AssemblyBrowsableTypesAllEnumerable GetBrowsableTypes<T>(Assembly assembly = null, bool inherit = true) where T : Attribute
         {
             return GetBrowsableTypes(typeof(T), assembly, inherit);
         }
 
+        /// <summary>
+        /// Gets enumerable through the all browsable types with the specified attribute.
+        /// <para>
+        /// If the assembly not specified, will search through the all browsable assemblies.
+        /// </para>
+        /// </summary>
+        /// <param name="attributeType">The type of the attribute.</param>
+        /// <param name="assembly">The assembly to browse.</param>
+        /// <param name="inherit">Determines whether to search in inheritance chain to find the attribute.</param>
         public static AssemblyBrowsableTypesAllEnumerable GetBrowsableTypes(Type attributeType, Assembly assembly = null, bool inherit = true)
         {
             if (attributeType == null) throw new ArgumentNullException(nameof(attributeType));
@@ -23,6 +40,9 @@ namespace UGF.Assemblies.Runtime
                 : new AssemblyBrowsableTypesAllEnumerable(assembly, attributeType, inherit);
         }
 
+        /// <summary>
+        /// Gets enumerable through the all browsable assemblies.
+        /// </summary>
         public static AssemblyBrowsableAssembliesEnumerable GetBrowsableAssemblies()
         {
             return new AssemblyBrowsableAssembliesEnumerable(AppDomain.CurrentDomain.GetAssemblies());

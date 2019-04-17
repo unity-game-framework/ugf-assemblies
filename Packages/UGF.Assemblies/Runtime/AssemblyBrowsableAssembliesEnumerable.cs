@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace UGF.Assemblies.Runtime
 {
+    /// <summary>
+    /// Represents enumerable through the all browsable assemblies from the specified collection.
+    /// </summary>
     public struct AssemblyBrowsableAssembliesEnumerable : IEnumerable<Assembly>
     {
         private readonly IReadOnlyList<Assembly> m_assemblies;
@@ -53,6 +56,10 @@ namespace UGF.Assemblies.Runtime
             }
         }
 
+        /// <summary>
+        /// Creates enumerable from the specified assemblies collection.
+        /// </summary>
+        /// <param name="assemblies">The collection of the assemblies to enumerate.</param>
         public AssemblyBrowsableAssembliesEnumerable(IReadOnlyList<Assembly> assemblies)
         {
             m_assemblies = assemblies ?? throw new ArgumentNullException(nameof(assemblies));

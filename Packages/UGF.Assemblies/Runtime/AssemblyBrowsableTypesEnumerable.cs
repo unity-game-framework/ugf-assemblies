@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace UGF.Assemblies.Runtime
 {
+    /// <summary>
+    /// Represents enumerable through the all types that contains the specified attribute.
+    /// </summary>
     public struct AssemblyBrowsableTypesEnumerable : IEnumerable<Type>
     {
         private readonly IReadOnlyList<Type> m_types;
@@ -58,6 +61,12 @@ namespace UGF.Assemblies.Runtime
             }
         }
 
+        /// <summary>
+        /// Creates enumerable from the specified collection.
+        /// </summary>
+        /// <param name="types">The collection of the types.</param>
+        /// <param name="attributeType">The type of the attribute.</param>
+        /// <param name="inherit">Determines whether to search in inheritance chain to find the attribute.</param>
         public AssemblyBrowsableTypesEnumerable(IReadOnlyList<Type> types, Type attributeType, bool inherit)
         {
             m_types = types ?? throw new ArgumentNullException(nameof(types));
