@@ -7,8 +7,47 @@ namespace UGF.Assemblies.Runtime
     /// <summary>
     /// Provides utility for working with assemblies.
     /// </summary>
-    public static class AssemblyUtility
+    public static partial class AssemblyUtility
     {
+        /// <summary>
+        /// Gets enumerable through the all browsable types with the specified attribute.
+        /// <para>
+        /// If the assembly not specified, will search through the all browsable assemblies.
+        /// </para>
+        /// </summary>
+        /// <param name="assembly">The assembly to browse.</param>
+        /// <param name="inherit">Determines whether to search in inheritance chain to find the attribute.</param>
+        public static AssemblyBrowsableTypesAllEnumerable GetBrowsableTypes<T>(Assembly assembly = null, bool inherit = true) where T : Attribute
+        {
+            return GetBrowsableTypes(typeof(T), assembly, inherit);
+        }
+
+        /// <summary>
+        /// Gets enumerable through the all browsable types with the specified attribute.
+        /// <para>
+        /// If the assembly not specified, will search through the all browsable assemblies.
+        /// </para>
+        /// </summary>
+        /// <param name="attributeType">The type of the attribute.</param>
+        /// <param name="assembly">The assembly to browse.</param>
+        /// <param name="inherit">Determines whether to search in inheritance chain to find the attribute.</param>
+        public static AssemblyBrowsableTypesAllEnumerable GetBrowsableTypes(Type attributeType, Assembly assembly = null, bool inherit = true)
+        {
+            if (attributeType == null) throw new ArgumentNullException(nameof(attributeType));
+
+            return assembly == null
+                ? new AssemblyBrowsableTypesAllEnumerable(AppDomain.CurrentDomain.GetAssemblies(), attributeType, inherit)
+                : new AssemblyBrowsableTypesAllEnumerable(assembly, attributeType, inherit);
+        }
+
+        /// <summary>
+        /// Gets enumerable through the all browsable assemblies.
+        /// </summary>
+        public static AssemblyBrowsableAssembliesEnumerable GetBrowsableAssemblies()
+        {
+            return new AssemblyBrowsableAssembliesEnumerable(AppDomain.CurrentDomain.GetAssemblies());
+        }
+
         /// <summary>
         /// Gets the browsable types marked with the specified attribute type.
         /// <para>
@@ -18,7 +57,7 @@ namespace UGF.Assemblies.Runtime
         /// <param name="results">The result collection to fill.</param>
         /// <param name="assembly">The assembly to browse.</param>
         /// <param name="inherit">Determines whether to search in inheritance chain to find the attribute.</param>
-        public static void GetBrowsableTypes<T>(ICollection<Type> results, Assembly assembly = null, bool inherit = true)
+        public static void GetBrowsableTypes<T>(ICollection<Type> results, Assembly assembly = null, bool inherit = true) where T : Attribute
         {
             if (results == null) throw new ArgumentNullException(nameof(results));
 
@@ -58,61 +97,6 @@ namespace UGF.Assemblies.Runtime
             {
                 InternalGetBrowsableTypes(results, assembly, attributeType, inherit);
             }
-        }
-
-        /// <summary>
-        /// Gets the browsable types marked with the specified attribute type from all assemblies.
-        /// </summary>
-        /// <param name="results">The result collection to fill.</param>
-        /// <param name="inherit">Determines whether to search in inheritance chain to find the attribute.</param>
-        [Obsolete("GetBrowsableTypes has been deprecated. It will be removed in the next major release.")]
-        public static void GetBrowsableTypes<T>(List<Type> results, bool inherit = true) where T : Attribute
-        {
-            if (results == null) throw new ArgumentNullException(nameof(results));
-
-            GetBrowsableTypes(results, typeof(T), inherit);
-        }
-
-        /// <summary>
-        /// Gets the browsable types marked with the specified attribute type from all assemblies.
-        /// </summary>
-        /// <param name="results">The result collection to fill.</param>
-        /// <param name="attributeType">The type of the attribute.</param>
-        /// <param name="inherit">Determines whether to search in inheritance chain to find the attribute.</param>
-        [Obsolete("GetBrowsableTypes has been deprecated. It will be removed in the next major release.")]
-        public static void GetBrowsableTypes(List<Type> results, Type attributeType, bool inherit = true)
-        {
-            if (results == null) throw new ArgumentNullException(nameof(results));
-            if (attributeType == null) throw new ArgumentNullException(nameof(attributeType));
-
-            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-
-            for (int i = 0; i < assemblies.Length; i++)
-            {
-                Assembly assembly = assemblies[i];
-
-                if (assembly.IsDefined(typeof(AssemblyBrowsableAttribute)))
-                {
-                    InternalGetBrowsableTypes(results, assembly, attributeType, inherit);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the browsable types marked with the specified attribute type from the specified assembly.
-        /// </summary>
-        /// <param name="results">The result collection to fill.</param>
-        /// <param name="assembly">The assembly to browse.</param>
-        /// <param name="attributeType">The type of the attribute.</param>
-        /// <param name="inherit">Determines whether to search in inheritance chain to find the attribute.</param>
-        [Obsolete("GetBrowsableTypes has been deprecated. It will be removed in the next major release.")]
-        public static void GetBrowsableTypes(List<Type> results, Assembly assembly, Type attributeType, bool inherit = true)
-        {
-            if (results == null) throw new ArgumentNullException(nameof(results));
-            if (assembly == null) throw new ArgumentNullException(nameof(assembly));
-            if (attributeType == null) throw new ArgumentNullException(nameof(attributeType));
-
-            InternalGetBrowsableTypes(results, assembly, attributeType, inherit);
         }
 
         /// <summary>
