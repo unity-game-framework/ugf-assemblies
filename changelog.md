@@ -43,7 +43,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `AssemblyUtility.GetBrowsableTypes` with results collection as `ICollection<Type>` and optional `Assembly` argument. 
 - `AssemblyUtility.TryGetBrowsableAssembly` to get browsable assembly by name.
 
-### Changed
+### Deprecated
 - `AssemblyUtility.GetBrowsableTypes` overloads that takes results collection as `List<Type>` have been deprecated.
 
 ## 1.2.0 - 2019-04-01
