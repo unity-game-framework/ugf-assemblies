@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Nothing.
 
 ### Changed
-- `AssemblyBrowsableTypesAllEnumerable` has been refactored. (#29)
+- Nothing.
 
 ### Deprecated
 - Nothing.
@@ -25,6 +25,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 - Nothing.
+
+## 1.4.1 - 2019-04-18
+- [Commits](https://github.com/unity-game-framework/ugf-assemblies/compare/1.4.0...1.4.1)
+- [Milestone](https://github.com/unity-game-framework/ugf-assemblies/milestone/7?closed=1)
+
+### Changed
+- `AssemblyBrowsableTypesAllEnumerable` has been refactored. (#29)
 
 ## 1.4.0 - 2019-04-17
 - [Commits](https://github.com/unity-game-framework/ugf-assemblies/compare/1.3.0...1.4.0)
