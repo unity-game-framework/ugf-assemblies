@@ -5,6 +5,9 @@ using System.Reflection;
 
 namespace UGF.Assemblies.Runtime
 {
+    /// <summary>
+    /// Represents enumerable through the all types that contains the specified attribute.
+    /// </summary>
     public struct AssemblyBrowsableTypesAllEnumerable : IEnumerable<Type>
     {
         private readonly Assembly m_assembly;
@@ -22,9 +25,9 @@ namespace UGF.Assemblies.Runtime
             private readonly IReadOnlyList<Assembly> m_assemblies;
             private readonly Type m_attributeType;
             private readonly bool m_inherit;
-            private AssemblyBrowsableAssembliesEnumerable.Enumerator m_assembliesEnumerator;
-            private AssemblyBrowsableTypesEnumerable.Enumerator m_typesEnumerator;
-            private bool m_typesInit;
+            private int m_assemblyIndex;
+            private Type[] m_types;
+            private int m_typeIndex;
             private Type m_current;
 
             public Enumerator(Assembly assembly, Type attributeType, bool inherit)
@@ -33,9 +36,9 @@ namespace UGF.Assemblies.Runtime
                 m_assemblies = null;
                 m_attributeType = attributeType;
                 m_inherit = inherit;
-                m_assembliesEnumerator = default;
-                m_typesEnumerator = new AssemblyBrowsableTypesEnumerable.Enumerator(m_assembly.GetTypes(), m_attributeType, m_inherit);
-                m_typesInit = true;
+                m_assemblyIndex = 0;
+                m_types = null;
+                m_typeIndex = 0;
                 m_current = null;
             }
 
@@ -45,9 +48,9 @@ namespace UGF.Assemblies.Runtime
                 m_assemblies = assemblies;
                 m_attributeType = attributeType;
                 m_inherit = inherit;
-                m_assembliesEnumerator = new AssemblyBrowsableAssembliesEnumerable.Enumerator(m_assemblies);
-                m_typesEnumerator = default;
-                m_typesInit = false;
+                m_assemblyIndex = 0;
+                m_types = null;
+                m_typeIndex = 0;
                 m_current = null;
             }
 
@@ -57,67 +60,112 @@ namespace UGF.Assemblies.Runtime
 
             public bool MoveNext()
             {
-                return m_assemblies == null ? MoveAssembly() : MoveAssemblies();
+                if (!Next())
+                {
+                    NextAssembly();
+                }
+
+                while (Next())
+                {
+                    Type type = m_types[m_typeIndex++];
+
+                    if (type != null && CheckType(type))
+                    {
+                        m_current = type;
+                        return true;
+                    }
+
+                    if (!Next())
+                    {
+                        NextAssembly();
+                    }
+                }
+
+                return false;
             }
 
             public void Reset()
             {
-                if (m_assemblies != null)
-                {
-                    m_assembliesEnumerator = new AssemblyBrowsableAssembliesEnumerable.Enumerator(m_assemblies);
-                    m_typesEnumerator = default;
-                    m_typesInit = false;
-                }
-                else
-                {
-                    m_assembliesEnumerator = default;
-                    m_typesEnumerator = new AssemblyBrowsableTypesEnumerable.Enumerator(m_assembly.GetTypes(), m_attributeType, m_inherit);
-                    m_typesInit = true;
-                }
-
+                m_assemblyIndex = 0;
+                m_types = null;
+                m_typeIndex = 0;
                 m_current = null;
             }
 
-            private bool MoveAssembly()
+            private bool Next()
             {
-                if (m_typesInit && m_typesEnumerator.MoveNext())
-                {
-                    m_current = m_typesEnumerator.Current;
-                    return true;
-                }
-
-                m_typesEnumerator = default;
-                m_typesInit = false;
-                return false;
+                return m_types != null && m_typeIndex < m_types.Length;
             }
 
-            private bool MoveAssemblies()
+            private void NextAssembly()
             {
-                bool state = MoveAssembly();
+                m_types = null;
+                m_typeIndex = 0;
 
-                if (!state)
+                if (m_assemblies != null)
                 {
-                    while (!m_typesInit && m_assembliesEnumerator.MoveNext())
+                    while (m_assemblyIndex < m_assemblies.Count && m_types == null)
                     {
-                        Assembly assembly = m_assembliesEnumerator.Current;
+                        Assembly assembly = m_assemblies[m_assemblyIndex++];
 
-                        if (assembly != null)
+                        if (assembly.IsDefined(typeof(AssemblyBrowsableAttribute)))
                         {
-                            m_typesEnumerator = new AssemblyBrowsableTypesEnumerable.Enumerator(assembly.GetTypes(), m_attributeType, m_inherit);
-                            m_typesInit = true;
+                            Type[] types = GetTypes(assembly);
 
-                            if (MoveAssembly())
+                            if (types.Length > 0)
                             {
-                                return true;
+                                m_types = types;
                             }
                         }
                     }
                 }
 
-                return state;
+                if (m_assembly != null)
+                {
+                    if (m_assemblyIndex < 1)
+                    {
+                        Type[] types = GetTypes(m_assembly);
+
+                        if (types.Length > 0)
+                        {
+                            m_types = types;
+                            m_assemblyIndex++;
+                        }
+                    }
+                }
+            }
+
+            private bool CheckType(Type type)
+            {
+                try
+                {
+                    return type.IsDefined(m_attributeType, m_inherit);
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+
+            private Type[] GetTypes(Assembly assembly)
+            {
+                try
+                {
+                    return assembly.GetTypes();
+                }
+                catch (ReflectionTypeLoadException exception)
+                {
+                    return exception.Types;
+                }
             }
         }
 
+        /// <summary>
+        /// Creates enumerable from the specified assembly.
+        /// </summary>
+        /// <param name="assembly">The assembly to browse.</param>
+        /// <param name="attributeType">The type of the attribute.</param>
+        /// <param name="inherit">Determines whether to search in inheritance chain to find the attribute.</param>
         public AssemblyBrowsableTypesAllEnumerable(Assembly assembly, Type attributeType, bool inherit)
         {
             m_assembly = assembly;
@@ -126,6 +174,12 @@ namespace UGF.Assemblies.Runtime
             m_inherit = inherit;
         }
 
+        /// <summary>
+        /// Creates enumerable from the specified assembly collection.
+        /// </summary>
+        /// <param name="assemblies">The assemblies to browse.</param>
+        /// <param name="attributeType">The type of the attribute.</param>
+        /// <param name="inherit">Determines whether to search in inheritance chain to find the attribute.</param>
         public AssemblyBrowsableTypesAllEnumerable(Assembly[] assemblies, Type attributeType, bool inherit)
         {
             m_assembly = null;
