@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Nothing.
 
 ### Fixed
-- Nothing.
+- `AssemblyEditorUtility.GetAssetPathsUnderAssemblyDefinitionFile` does not collect directories from root with `asmdef` file (#38)
 
 ### Security
 - Nothing.
