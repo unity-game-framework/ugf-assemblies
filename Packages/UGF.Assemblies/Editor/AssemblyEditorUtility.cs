@@ -51,7 +51,7 @@ namespace UGF.Assemblies.Editor
                 string path = GetAttributesFilePath(assemblyDefinition);
                 string text = File.ReadAllText(path);
 
-                ParseAttributes(text, attributes);
+                InternalParseAttributes(text, attributes);
             }
 
             return attributes;
@@ -284,7 +284,7 @@ namespace UGF.Assemblies.Editor
             }
         }
 
-        private static void ParseAttributes(string text, ICollection<string> attributes)
+        private static void InternalParseAttributes(string text, HashSet<string> attributes)
         {
             var builder = new StringBuilder();
             bool append = false;
