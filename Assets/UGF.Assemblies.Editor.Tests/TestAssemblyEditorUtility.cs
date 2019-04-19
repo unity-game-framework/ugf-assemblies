@@ -3,6 +3,7 @@ using NUnit.Framework;
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEditorInternal;
+using UnityEngine;
 
 namespace UGF.Assemblies.Editor.Tests
 {
@@ -74,11 +75,35 @@ namespace UGF.Assemblies.Editor.Tests
         }
 
         [Test]
+        public void GetAssetPathsUnderAssemblyDefinitionFileByAssetType()
+        {
+            var assets = new List<string>();
+
+            AssemblyEditorUtility.GetAssetPathsUnderAssemblyDefinitionFile(assets, m_testEditorAssembly, typeof(Material));
+
+            Assert.AreEqual(1, assets.Count);
+            Assert.Contains(m_testEditorAssemblyAsset, assets);
+        }
+
+        [Test]
+        public void GetAssetPathsUnderAssemblyDefinitionFileByAssetTypeAndTextAsset()
+        {
+            var assets = new List<string>();
+
+            AssemblyEditorUtility.GetAssetPathsUnderAssemblyDefinitionFile(assets, m_testEditorAssemblyAsset, typeof(TextAsset));
+
+            Assert.AreEqual(2, assets.Count);
+            Assert.Contains(m_testEditorAssembly, assets);
+            Assert.Contains("Assets/UGF.Assemblies.Editor.Tests/TestEditorAssembly/TestEditorAssemblyUtility.cs", assets);
+        }
+
+        [Test]
         public void GetAssetPathsUnderAssemblyDefinitionFile()
         {
-            List<string> assets = AssemblyEditorUtility.GetAssetPathsUnderAssemblyDefinitionFile(m_testEditorAssembly, ".mat");
+            var assets = new List<string>();
 
-            Assert.NotNull(assets);
+            AssemblyEditorUtility.GetAssetPathsUnderAssemblyDefinitionFile(assets, m_testEditorAssembly, ".mat");
+
             Assert.AreEqual(1, assets.Count);
             Assert.Contains(m_testEditorAssemblyAsset, assets);
         }
