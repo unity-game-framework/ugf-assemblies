@@ -14,9 +14,10 @@ namespace UGF.Assemblies.Editor.Tests
         private readonly string m_testEditorAssembly = "Assets/UGF.Assemblies.Editor.Tests/TestEditorAssembly/TestEditorAssembly.asmdef";
         private readonly string m_testEditorAssemblyAsset = "Assets/UGF.Assemblies.Editor.Tests/TestEditorAssembly/TestEditorAssemblyMaterial.mat";
 
-        [Test, Ignore("")]
+        [Test]
         public void SetAttributeActive()
         {
+            Assert.Ignore();
         }
 
         [Test]
@@ -40,9 +41,10 @@ namespace UGF.Assemblies.Editor.Tests
             Assert.True(attributes.Contains(m_attribute));
         }
 
-        [Test, Ignore("")]
+        [Test]
         public void SaveAttributes()
         {
+            Assert.Ignore();
         }
 
         [Test]
@@ -81,8 +83,9 @@ namespace UGF.Assemblies.Editor.Tests
 
             AssemblyEditorUtility.GetAssetPathsUnderAssemblyDefinitionFile(assets, m_testEditorAssembly, typeof(Material));
 
-            Assert.AreEqual(1, assets.Count);
+            Assert.AreEqual(2, assets.Count);
             Assert.Contains(m_testEditorAssemblyAsset, assets);
+            Assert.Contains("Assets/UGF.Assemblies.Editor.Tests/TestEditorAssembly/Other/OtherMaterial.mat", assets);
         }
 
         [Test]
@@ -92,9 +95,10 @@ namespace UGF.Assemblies.Editor.Tests
 
             AssemblyEditorUtility.GetAssetPathsUnderAssemblyDefinitionFile(assets, m_testEditorAssemblyAsset, typeof(TextAsset));
 
-            Assert.AreEqual(2, assets.Count);
+            Assert.AreEqual(3, assets.Count);
             Assert.Contains(m_testEditorAssembly, assets);
             Assert.Contains("Assets/UGF.Assemblies.Editor.Tests/TestEditorAssembly/TestEditorAssemblyUtility.cs", assets);
+            Assert.Contains("Assets/UGF.Assemblies.Editor.Tests/TestEditorAssembly/Other/OtherTextAsset.txt", assets);
         }
 
         [Test]
@@ -104,8 +108,9 @@ namespace UGF.Assemblies.Editor.Tests
 
             AssemblyEditorUtility.GetAssetPathsUnderAssemblyDefinitionFile(assets, m_testEditorAssembly, ".mat");
 
-            Assert.AreEqual(1, assets.Count);
+            Assert.AreEqual(2, assets.Count);
             Assert.Contains(m_testEditorAssemblyAsset, assets);
+            Assert.Contains("Assets/UGF.Assemblies.Editor.Tests/TestEditorAssembly/Other/OtherMaterial.mat", assets);
         }
 
         [Test]

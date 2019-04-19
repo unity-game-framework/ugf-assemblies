@@ -26,6 +26,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Security
 - Nothing.
 
+## 1.5.1 - 2019-04-19
+- [Commits](https://github.com/unity-game-framework/ugf-assemblies/compare/1.5.0...1.5.1)
+- [Milestone](https://github.com/unity-game-framework/ugf-assemblies/milestone/9?closed=1)
+
+### Fixed
+- `AssemblyEditorUtility.GetAssetPathsUnderAssemblyDefinitionFile` does not collect directories from root with `asmdef` file (#38)
+
 ## 1.5.0 - 2019-04-19
 - [Commits](https://github.com/unity-game-framework/ugf-assemblies/compare/1.4.1...1.5.0)
 - [Milestone](https://github.com/unity-game-framework/ugf-assemblies/milestone/8?closed=1)
