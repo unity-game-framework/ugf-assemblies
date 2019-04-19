@@ -4,7 +4,7 @@ UGF.Assemblies
 
 ## Info
 
-- **Version**: `1.5.0`
+- **Version**: `1.5.1`
 - **Unity Version**: `2019.1.0`
 - **Scripting Runtime Version**: `.NET 4.x Equivalent`
 - **Api Compatibility Level**: `.NET Standard 2.0`
