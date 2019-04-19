@@ -9,14 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Milestone](https://github.com/unity-game-framework/ugf-assemblies/milestone/0?closed=1)
 
 ### Added
-- `GetAssetPathsUnderAssemblyDefinitionFile` overload with type argument to get assets that represents the specified asset type. (#33)
-- `GetAssetPathsUnderAssemblyDefinitionFile` overload with `ICollection<string>` argument as results.
+- Nothing.
 
 ### Changed
 - Nothing.
 
 ### Deprecated
-- `GetAssetPathsUnderAssemblyDefinitionFile` overload that returns new `List<string>` of the paths has been deprecated.
+- Nothing.
 
 ### Removed
 - Nothing.
@@ -26,6 +25,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 - Nothing.
+
+## 1.5.0 - 2019-04-19
+- [Commits](https://github.com/unity-game-framework/ugf-assemblies/compare/1.4.1...1.5.0)
+- [Milestone](https://github.com/unity-game-framework/ugf-assemblies/milestone/8?closed=1)
+
+### Added
+- `GetAssetPathsUnderAssemblyDefinitionFile` overload with type argument to get assets that represents the specified asset type. (#33)
+- `GetAssetPathsUnderAssemblyDefinitionFile` overload with `ICollection<string>` argument as results.
+
+### Deprecated
+- `GetAssetPathsUnderAssemblyDefinitionFile` overload that returns new `List<string>` of the paths has been deprecated.
 
 ## 1.4.1 - 2019-04-18
 - [Commits](https://github.com/unity-game-framework/ugf-assemblies/compare/1.4.0...1.4.1)
