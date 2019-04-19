@@ -11,7 +11,7 @@ namespace UGF.Assemblies.Editor
     /// <summary>
     /// Provides utility for working with assemblies in editor.
     /// </summary>
-    public static class AssemblyEditorUtility
+    public static partial class AssemblyEditorUtility
     {
         /// <summary>
         /// Adds or removes a text representation of the attribute in attributes file of the specified assembly definition asset, depends on the specified state value.
@@ -146,24 +146,40 @@ namespace UGF.Assemblies.Editor
         }
 
         /// <summary>
+        /// Gets collection of asset paths that belongs to the specified assembly definition file and represents specified asset type.
+        /// </summary>
+        /// <param name="results">The collection of the paths to fill.</param>
+        /// <param name="assemblyDefinitionFilePath">The path of assembly definition file.</param>
+        /// <param name="assetType">The type of the asset.</param>
+        public static void GetAssetPathsUnderAssemblyDefinitionFile(ICollection<string> results, string assemblyDefinitionFilePath, Type assetType)
+        {
+            if (results == null) throw new ArgumentNullException(nameof(results));
+            if (assemblyDefinitionFilePath == null) throw new ArgumentNullException(nameof(assemblyDefinitionFilePath));
+            if (assetType == null) throw new ArgumentNullException(nameof(assetType));
+
+            string directory = Path.GetDirectoryName(assemblyDefinitionFilePath);
+
+            InternalGetAssetPathsInDirectory(results, directory, assetType);
+            InternalGetAssetPathsUnderAssemblyDefinitionFile(results, directory, assetType);
+        }
+
+        /// <summary>
         /// Gets collection of asset paths that belongs to the specified assembly definition file and contains specified extension.
         /// </summary>
+        /// <param name="results">The collection of the paths to fill.</param>
         /// <param name="assemblyDefinitionFilePath">The path of assembly definition file.</param>
         /// <param name="assetExtension">The asset extension. (Use format with '.')</param>
-        public static List<string> GetAssetPathsUnderAssemblyDefinitionFile(string assemblyDefinitionFilePath, string assetExtension)
+        public static void GetAssetPathsUnderAssemblyDefinitionFile(ICollection<string> results, string assemblyDefinitionFilePath, string assetExtension)
         {
+            if (results == null) throw new ArgumentNullException(nameof(results));
             if (assemblyDefinitionFilePath == null) throw new ArgumentNullException(nameof(assemblyDefinitionFilePath));
             if (assetExtension == null) throw new ArgumentNullException(nameof(assetExtension));
-            
-            var paths = new List<string>();
 
             string directory = Path.GetDirectoryName(assemblyDefinitionFilePath);
             string pattern = $"*{assetExtension}";
 
-            InternalGetAssetPathsInDirectory(paths, directory, pattern);
-            InternalGetAssetPathsUnderAssemblyDefinitionFile(paths, directory, pattern);
-
-            return paths;
+            InternalGetAssetPathsInDirectory(results, directory, pattern);
+            InternalGetAssetPathsUnderAssemblyDefinitionFile(results, directory, pattern);
         }
 
         /// <summary>
@@ -210,7 +226,22 @@ namespace UGF.Assemblies.Editor
             return true;
         }
 
-        private static void InternalGetAssetPathsUnderAssemblyDefinitionFile(List<string> paths, string directory, string pattern)
+        private static void InternalGetAssetPathsUnderAssemblyDefinitionFile(ICollection<string> paths, string directory, Type assetType)
+        {
+            if (Directory.GetFiles(directory, "*.asmdef").Length == 0)
+            {
+                InternalGetAssetPathsInDirectory(paths, directory, assetType);
+
+                string[] directories = Directory.GetDirectories(directory);
+
+                for (int i = 0; i < directories.Length; i++)
+                {
+                    InternalGetAssetPathsUnderAssemblyDefinitionFile(paths, directories[i], assetType);
+                }
+            }
+        }
+
+        private static void InternalGetAssetPathsUnderAssemblyDefinitionFile(ICollection<string> paths, string directory, string pattern)
         {
             if (Directory.GetFiles(directory, "*.asmdef").Length == 0)
             {
@@ -225,7 +256,23 @@ namespace UGF.Assemblies.Editor
             }
         }
 
-        private static void InternalGetAssetPathsInDirectory(List<string> paths, string directory, string pattern)
+        private static void InternalGetAssetPathsInDirectory(ICollection<string> paths, string directory, Type assetType)
+        {
+            string[] files = Directory.GetFiles(directory);
+
+            for (int i = 0; i < files.Length; i++)
+            {
+                string path = files[i].Replace("\\", "/");
+                Type type = AssetDatabase.GetMainAssetTypeAtPath(path);
+
+                if (assetType.IsAssignableFrom(type))
+                {
+                    paths.Add(path);
+                }
+            }
+        }
+
+        private static void InternalGetAssetPathsInDirectory(ICollection<string> paths, string directory, string pattern)
         {
             string[] files = Directory.GetFiles(directory, pattern);
 
@@ -237,7 +284,7 @@ namespace UGF.Assemblies.Editor
             }
         }
 
-        private static void ParseAttributes(string text, HashSet<string> attributes)
+        private static void ParseAttributes(string text, ICollection<string> attributes)
         {
             var builder = new StringBuilder();
             bool append = false;
