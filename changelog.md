@@ -9,13 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [Milestone](https://github.com/unity-game-framework/ugf-assemblies/milestone/0?closed=1)
 
 ### Added
-- Nothing.
+- `GetAssetPathsUnderAssemblyDefinitionFile` overload with type argument to get assets that represents the specified asset type. (#33)
+- `GetAssetPathsUnderAssemblyDefinitionFile` overload with `ICollection<string>` argument as results.
 
 ### Changed
 - Nothing.
 
 ### Deprecated
-- Nothing.
+- `GetAssetPathsUnderAssemblyDefinitionFile` overload that returns new `List<string>` of the paths has been deprecated.
 
 ### Removed
 - Nothing.
