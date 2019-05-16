@@ -167,15 +167,15 @@ namespace UGF.Assemblies.Editor
         /// </summary>
         /// <param name="results">The collection of the paths to fill.</param>
         /// <param name="assemblyDefinitionFilePath">The path of assembly definition file.</param>
-        /// <param name="assetExtension">The asset extension. (Use format with '.')</param>
-        public static void GetAssetPathsUnderAssemblyDefinitionFile(ICollection<string> results, string assemblyDefinitionFilePath, string assetExtension)
+        /// <param name="assetExtensionName">The asset extension name.</param>
+        public static void GetAssetPathsUnderAssemblyDefinitionFile(ICollection<string> results, string assemblyDefinitionFilePath, string assetExtensionName)
         {
             if (results == null) throw new ArgumentNullException(nameof(results));
             if (assemblyDefinitionFilePath == null) throw new ArgumentNullException(nameof(assemblyDefinitionFilePath));
-            if (assetExtension == null) throw new ArgumentNullException(nameof(assetExtension));
+            if (assetExtensionName == null) throw new ArgumentNullException(nameof(assetExtensionName));
 
             string directory = Path.GetDirectoryName(assemblyDefinitionFilePath);
-            string pattern = $"*{assetExtension}";
+            string pattern = $"*.{assetExtensionName}";
 
             InternalGetAssetPathsUnderAssemblyDefinitionFile(results, directory, pattern);
         }
@@ -220,7 +220,7 @@ namespace UGF.Assemblies.Editor
                 return false;
             }
 
-            path = files[0].Replace("\\", "/");
+            path = files[0].Replace('\\', '/');
             return true;
         }
 
@@ -231,7 +231,7 @@ namespace UGF.Assemblies.Editor
 
             for (int i = 0; i < files.Length; i++)
             {
-                string path = files[i].Replace("\\", "/");
+                string path = files[i].Replace('\\', '/');
                 Type type = AssetDatabase.GetMainAssetTypeAtPath(path);
 
                 if (assetType.IsAssignableFrom(type))
@@ -258,7 +258,7 @@ namespace UGF.Assemblies.Editor
 
             for (int i = 0; i < files.Length; i++)
             {
-                string path = files[i].Replace("\\", "/");
+                string path = files[i].Replace('\\', '/');
 
                 paths.Add(path);
             }
@@ -274,7 +274,7 @@ namespace UGF.Assemblies.Editor
             }
         }
 
-        private static void InternalParseAttributes(string text, HashSet<string> attributes)
+        private static void InternalParseAttributes(string text, ISet<string> attributes)
         {
             var builder = new StringBuilder();
             bool append = false;
