@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Nothing.
 
 ### Changed
-- Nothing.
+- `GetAssetPathsUnderAssemblyDefinitionFile` now use only extension name instead of file search pattern. (#41)
 
 ### Deprecated
 - Nothing.

@@ -106,7 +106,7 @@ namespace UGF.Assemblies.Editor.Tests
         {
             var assets = new List<string>();
 
-            AssemblyEditorUtility.GetAssetPathsUnderAssemblyDefinitionFile(assets, m_testEditorAssembly, ".mat");
+            AssemblyEditorUtility.GetAssetPathsUnderAssemblyDefinitionFile(assets, m_testEditorAssembly, "mat");
 
             Assert.AreEqual(2, assets.Count);
             Assert.Contains(m_testEditorAssemblyAsset, assets);
