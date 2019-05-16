@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Nothing.
 
 ### Changed
-- `GetAssetPathsUnderAssemblyDefinitionFile` now use only extension name instead of file search pattern. (#41)
+- Nothing.
 
 ### Deprecated
 - Nothing.
@@ -25,6 +25,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Security
 - Nothing.
+
+## 1.5.2 - 2019-05-16
+- [Commits](https://github.com/unity-game-framework/ugf-assemblies/compare/1.5.1...1.5.2)
+- [Milestone](https://github.com/unity-game-framework/ugf-assemblies/milestone/10?closed=1)
+
+### Changed
+- `GetAssetPathsUnderAssemblyDefinitionFile` now use only extension name instead of file search pattern. (#41)
 
 ## 1.5.1 - 2019-04-19
 - [Commits](https://github.com/unity-game-framework/ugf-assemblies/compare/1.5.0...1.5.1)
