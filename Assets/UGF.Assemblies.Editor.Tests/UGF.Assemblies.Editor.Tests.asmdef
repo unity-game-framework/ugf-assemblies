@@ -4,9 +4,6 @@
         "GUID:47c3349eaf0910446a6e557ee1a6748f",
         "GUID:37d43482ba9b4804cab3b97251fc8943"
     ],
-    "optionalUnityReferences": [
-        "TestAssemblies"
-    ],
     "includePlatforms": [
         "Editor"
     ],
@@ -16,5 +13,6 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": []
+    "versionDefines": [],
+    "noEngineReferences": false
 }
