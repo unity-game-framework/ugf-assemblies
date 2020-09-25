@@ -11,8 +11,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git://github.com/unity-game-framework/ugf-assemblies.git",
-        "directory": "Packages/Package"
+        "url": "git://github.com/unity-game-framework/ugf-assemblies.git"
     },
     "changelogUrl": "https://github.com/unity-game-framework/ugf-assemblies/blob/master/license",
     "licenseUrl": "https://github.com/unity-game-framework/ugf-assemblies/blob/master/changelog.md",
